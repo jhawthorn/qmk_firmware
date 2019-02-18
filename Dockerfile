@@ -24,6 +24,5 @@ ENV KEYMAP=hawthkey
 
 VOLUME /qmk_firmware
 WORKDIR /qmk_firmware
-COPY . .
 
 CMD make $KEYBOARD:$KEYMAP
