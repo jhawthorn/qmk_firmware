@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     && rm -rf /var/lib/apt/lists/*
 
 ENV KEYBOARD=ergodox_ez
-ENV KEYMAP=default
+ENV KEYMAP=hawthkey
 
 VOLUME /qmk_firmware
 WORKDIR /qmk_firmware
