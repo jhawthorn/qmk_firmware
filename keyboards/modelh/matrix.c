@@ -89,19 +89,14 @@ static uint16_t mcp_read(uint8_t device, uint8_t addr) {
 
 static void mcp_init(void) {
     // Mode 3
-    SPI_Init(
-            SPI_SPEED_FCPU_DIV_8 |
-            SPI_ORDER_MSB_FIRST |
-            SPI_SCK_LEAD_FALLING |
-            SPI_SAMPLE_TRAILING |
-            SPI_MODE_MASTER
-            );
+    SPI_Init(SPI_SPEED_FCPU_DIV_8 | SPI_MODE_MASTER);
 
     /* CS pin: F4 */
     DDRF |= (1 << 4);
     mcp_cs_disable();
 
     /* sleep? */
+    _delay_ms(20);
 
     mcp_cs_enable();
     SPI_SendByte(0b01000000);
@@ -112,7 +107,7 @@ static void mcp_init(void) {
     mcp_write(0, MCP_IODIR,  0xffff);
     mcp_write(0, MCP_GPPU,   0xffff);
 
-    /* Device 1: All pins read and 0 */
+    /* Device 1: All pins read and low */
     mcp_write(1, MCP_IODIR,  0xffff);
     mcp_write(1, MCP_GPIO,   0x0000);
 }
@@ -144,7 +139,7 @@ static void select_row(uint8_t row) {
 }
 
 static matrix_row_t read_cols(uint8_t row) {
-    return mcp_read(0, MCP_GPIO);
+    return 0xffff ^ mcp_read(0, MCP_GPIO);
 }
 
 uint8_t matrix_scan(void) {
@@ -168,4 +163,3 @@ uint8_t matrix_scan(void) {
 
     return matrix_has_changed;
 }
-
