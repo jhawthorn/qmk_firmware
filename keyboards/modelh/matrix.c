@@ -136,7 +136,6 @@ void matrix_init(void) {
 
 static void select_row(uint8_t row) {
     mcp_write(1, MCP_IODIR,  0xffff ^ (1 << row));
-    mcp_write(1, MCP_GPIO,   0x0000);
 }
 
 static void deselect_rows(void) {
