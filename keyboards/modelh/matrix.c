@@ -87,6 +87,8 @@ static uint16_t mcp_read(uint8_t device, uint8_t addr) {
     return low_byte | (high_byte << 8);
 }
 
+#define ROW_CHIP_IODIR 0x00ff
+
 static void mcp_init(void) {
     // Mode 3
     SPI_Init(SPI_SPEED_FCPU_DIV_8 | SPI_MODE_MASTER);
@@ -108,7 +110,7 @@ static void mcp_init(void) {
     mcp_write(0, MCP_GPPU,   0xffff);
 
     /* Device 1: All pins read and low */
-    mcp_write(1, MCP_IODIR,  0xffff);
+    mcp_write(1, MCP_IODIR,  ROW_CHIP_IODIR);
     mcp_write(1, MCP_GPIO,   0x0000);
     mcp_write(1, MCP_GPPU,   0xffff);
 }
@@ -135,11 +137,11 @@ void matrix_init(void) {
 }
 
 static void select_row(uint8_t row) {
-    mcp_write(1, MCP_IODIR,  0xffff ^ (1 << row));
+    mcp_write(1, MCP_IODIR,  ROW_CHIP_IODIR ^ (1 << row));
 }
 
 static void deselect_rows(void) {
-    mcp_write(1, MCP_IODIR, 0xffff);
+    mcp_write(1, MCP_IODIR, ROW_CHIP_IODIR);
 }
 
 static matrix_row_t read_cols(uint8_t row) {
