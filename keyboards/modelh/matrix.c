@@ -97,9 +97,6 @@ static void mcp_init(void) {
     DDRF |= (1 << 4);
     mcp_cs_disable();
 
-    /* sleep? */
-    _delay_ms(20);
-
     mcp_cs_enable();
     SPI_SendByte(0b01000000);
     SPI_SendByte(MCP_IOCON);
