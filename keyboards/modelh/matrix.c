@@ -110,6 +110,7 @@ static void mcp_init(void) {
     /* Device 1: All pins read and low */
     mcp_write(1, MCP_IODIR,  0xffff);
     mcp_write(1, MCP_GPIO,   0x0000);
+    mcp_write(1, MCP_GPPU,   0xffff);
 }
 
 void matrix_print(void) {
@@ -138,6 +139,10 @@ static void select_row(uint8_t row) {
     mcp_write(1, MCP_GPIO,   0x0000);
 }
 
+static void deselect_rows(void) {
+    mcp_write(1, MCP_IODIR, 0xffff);
+}
+
 static matrix_row_t read_cols(uint8_t row) {
     return 0xffff ^ mcp_read(0, MCP_GPIO);
 }
@@ -154,6 +159,7 @@ uint8_t matrix_scan(void) {
             raw_matrix[i] = temp;
         }
     }
+    deselect_rows();
 
     // Unless hardware debouncing - use the configured debounce routine
     debounce(raw_matrix, matrix, MATRIX_ROWS, matrix_has_changed);
