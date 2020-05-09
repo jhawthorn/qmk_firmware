@@ -37,13 +37,13 @@
     K0A,      K0B,                K0C,                     K0D,      K0E,   K0F, K0G, K0H,   K0I,      K0J \
 ) \
 { \
-/* 07 */ { KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, K1G, K0C,   K1H, KC_NO, KC_NO, K1L,   K0G,   K0H, K4U, K0F,   K0D   }, \
-/* 06 */ { K0E,   K1M,   K1C,   K1D,   K1E,   K1F, K2N,   K1I, K1J,   K1K,   K2M,   K4R,   K4S, K4T, K5P,   KC_NO }, \
-/* 05 */ { KC_NO, KC_NO, K2B,   K2C,   K2D,   K2E, K3N,   K2H, K2I,   K2J,   K2K,   K1O,   K1P, K1Q, K1R,   KC_NO }, \
-/* 04 */ { KC_NO, KC_NO, K3B,   K3C,   K3D,   K3E, KC_NO, K3H, K3I,   K3J,   K3K,   K3R,   K3S, K3T, K3U,   K5O   }, \
-/* 03 */ { KC_NO, KC_NO, K4B,   K4C,   K4D,   K4E, K5K,   K4H, K4I,   K4J,   K4K,   K5L,   K5M, K3Q, K3P,   K5N   }, \
-/* 02 */ { K0A,   KC_NO, K4A,   K5B,   K5C,   K4F, K5J,   K4G, K4M,   K5I,   K4L,   K3O,   K4O, K4Q, K4P,   KC_NO }, \
-/* 01 */ { KC_NO, K1A,   K3A,   K2A,   K5D,   K3F, K4N,   K3G, K3M,   K5H,   K3L,   K2O,   K2P, K2Q, KC_NO, KC_NO }, \
-/* 00 */ { KC_NO, KC_NO, K5A,   K1B,   K5E,   K2F, K5F,   K2G, K5G,   KC_NO, K2L,   KC_NO, K0I, K0J, K1N,   K0B   }, \
+/* 07 */ { KC_NO, KC_NO, KC_NO, KC_NO, KC_NO, K1G, K0C,   K1H,   KC_NO, KC_NO, K1L,   K0G,   K0H, K4U, K0F,   K0D   }, \
+/* 06 */ { K1I,   K2N,   K1F,   K1E,   K1D,   K1C, K1M,   K0E,   K1J,   K1K,   K2M,   K4R,   K4S, K4T, K5P,   KC_NO }, \
+/* 05 */ { K2H,   K3N,   K2E,   K2D,   K2C,   K2B, KC_NO, KC_NO, K2I,   K2J,   K2K,   K1O,   K1P, K1Q, K1R,   KC_NO }, \
+/* 04 */ { K3H,   KC_NO, K3E,   K3D,   K3C,   K3B, KC_NO, KC_NO, K3I,   K3J,   K3K,   K3R,   K3S, K3T, K3U,   K5O   }, \
+/* 03 */ { K4H,   K5K,   K4E,   K4D,   K4C,   K4B, KC_NO, KC_NO, K4I,   K4J,   K4K,   K5L,   K5M, K3Q, K3P,   K5N   }, \
+/* 02 */ { K4G,   K5J,   K4F,   K5C,   K5B,   K4A, KC_NO, K0A,   K4M,   K5I,   K4L,   K3O,   K4O, K4Q, K4P,   KC_NO }, \
+/* 01 */ { K3G,   K4N,   K3F,   K5D,   K2A,   K3A, K1A,   KC_NO, K3M,   K5H,   K3L,   K2O,   K2P, K2Q, KC_NO, KC_NO }, \
+/* 00 */ { K2G,   K5F,   K2F,   K5E,   K1B,   K5A, KC_NO, KC_NO, K5G,   KC_NO, K2L,   KC_NO, K0I, K0J, K1N,   K0B   }, \
 }
-/*         0      1      2      3      4      5    6      7    8      9      A      B      C    D    E      F       */
+/*         0      1      2      3      4      5    6      7      8      9      A      B      C    D    E      F       */
