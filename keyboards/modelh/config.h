@@ -24,8 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PRODUCT_ID 0xB155
 #define DEVICE_VER 0x0001
 #define MANUFACTURER John Hawthorn
-#define PRODUCT modelh
-#define DESCRIPTION A custom keyboard
+#define PRODUCT Model H Keyboard
+#define DESCRIPTION A Model M Conversion
 
 /* key matrix size */
 #define MATRIX_ROWS 8
