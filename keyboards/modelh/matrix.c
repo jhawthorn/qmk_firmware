@@ -53,13 +53,14 @@ matrix_row_t matrix_get_row(uint8_t row) {
 #define MCP_IOCON  0x0A
 #define MCP_IODIR  0x00
 
-/* CS pin: F4 */
+#define MCP_CS_PIN F4
+
 static void mcp_cs_enable(void) {
-    PORTF &= ~(1 << 4);
+    writePinLow(MCP_CS_PIN);
 }
 
 static void mcp_cs_disable(void) {
-    PORTF |= (1 << 4);
+    writePinHigh(MCP_CS_PIN);
 }
 
 static void mcp_write(uint8_t device, uint8_t addr, uint16_t data) {
@@ -90,19 +91,21 @@ static uint16_t mcp_read(uint8_t device, uint8_t addr) {
 static int row_base_iodir = 0x00ff;
 
 static void mcp_init(void) {
-    // Mode 3
+    /* Mode 3 */
     SPI_Init(SPI_SPEED_FCPU_DIV_8 | SPI_MODE_MASTER);
 
-    /* CS pin: F4 */
-    DDRF |= (1 << 4);
+    /* Set CS pin as output and disable it */
+    setPinOutput(MCP_CS_PIN);
     mcp_cs_disable();
 
+    /* Configure both MCP23S17 in addressed mode */
     mcp_cs_enable();
     SPI_SendByte(0b01000000);
     SPI_SendByte(MCP_IOCON);
     SPI_SendByte(0x18);
     mcp_cs_disable();
 
+    /* Device 0: All pins read with pull ups */
     mcp_write(0, MCP_IODIR,  0xffff);
     mcp_write(0, MCP_GPPU,   0xffff);
 
