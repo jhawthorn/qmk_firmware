@@ -18,6 +18,8 @@
 
 #include "quantum.h"
 
+void modelh_set_leds(int num_lock, int caps_lock, int scroll_lock);
+
 /* This is a shortcut to help you visually see your layout.
  *
  * The first section contains all of the arguments representing the physical

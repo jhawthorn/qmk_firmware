@@ -87,7 +87,7 @@ static uint16_t mcp_read(uint8_t device, uint8_t addr) {
     return low_byte | (high_byte << 8);
 }
 
-#define ROW_CHIP_IODIR 0x00ff
+static int row_base_iodir = 0x00ff;
 
 static void mcp_init(void) {
     // Mode 3
@@ -106,8 +106,8 @@ static void mcp_init(void) {
     mcp_write(0, MCP_IODIR,  0xffff);
     mcp_write(0, MCP_GPPU,   0xffff);
 
-    /* Device 1: All pins read and low */
-    mcp_write(1, MCP_IODIR,  ROW_CHIP_IODIR);
+    /* Device 1: All pins read and low. We toggle IODIRs in the row scan */
+    mcp_write(1, MCP_IODIR,  row_base_iodir);
     mcp_write(1, MCP_GPIO,   0x0000);
     mcp_write(1, MCP_GPPU,   0xffff);
 }
@@ -134,11 +134,11 @@ void matrix_init(void) {
 }
 
 static void select_row(uint8_t row) {
-    mcp_write(1, MCP_IODIR,  ROW_CHIP_IODIR ^ (1 << row));
+    mcp_write(1, MCP_IODIR, row_base_iodir ^ (1 << row));
 }
 
 static void deselect_rows(void) {
-    mcp_write(1, MCP_IODIR, ROW_CHIP_IODIR);
+    mcp_write(1, MCP_IODIR, row_base_iodir);
 }
 
 static matrix_row_t read_cols(uint8_t row) {
@@ -166,4 +166,25 @@ uint8_t matrix_scan(void) {
     matrix_scan_quantum();
 
     return matrix_has_changed;
+}
+
+void modelh_set_leds(int num_lock, int caps_lock, int scroll_lock) {
+    uint16_t gpio = 0xffff;
+    if (num_lock)
+        gpio &= ~0x0400;
+    if (caps_lock)
+        gpio &= ~0x0200;
+    if (scroll_lock)
+        gpio &= ~0x0100;
+
+    row_base_iodir = gpio;
+    mcp_write(1, MCP_IODIR, row_base_iodir);
+}
+
+bool led_update_kb(led_t led_state) {
+    bool res = led_update_user(led_state);
+    if(res) {
+        modelh_set_leds(led_state.num_lock, led_state.caps_lock, led_state.scroll_lock);
+    }
+    return res;
 }
