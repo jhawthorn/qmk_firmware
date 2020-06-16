@@ -35,6 +35,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include QMK_KEYBOARD_H
 
+static const pin_t col_pins[] = MATRIX_COL_PINS;
+
 static matrix_row_t raw_matrix[MATRIX_ROWS];  // raw values
 static matrix_row_t matrix[MATRIX_ROWS];      // debounced values
 
@@ -91,12 +93,16 @@ static void select_row(uint8_t row) {
 }
 
 static void deselect_rows(void) {
-    //mcp_write(1, MCP_IODIR, row_base_iodir);
+    select_row(8);
 }
 
 static matrix_row_t read_cols(uint8_t row) {
-    return 0;
-    //return 0xffff ^ mcp_read(0, MCP_GPIO);
+    matrix_row_t val = 0;
+    for (int i = 0; i < MATRIX_COLS; i++) {
+        pin_t pin = col_pins[i];
+        val |= readPin(pin) ? 0 : (1 << i);
+    }
+    return val;
 }
 
 uint8_t matrix_scan(void) {
