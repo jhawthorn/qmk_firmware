@@ -53,67 +53,9 @@ matrix_row_t matrix_get_row(uint8_t row) {
 #define MCP_IOCON  0x0A
 #define MCP_IODIR  0x00
 
-#define MCP_CS_PIN F4
-
-static void mcp_cs_enable(void) {
-    writePinLow(MCP_CS_PIN);
-}
-
-static void mcp_cs_disable(void) {
-    writePinHigh(MCP_CS_PIN);
-}
-
-static void mcp_write(uint8_t device, uint8_t addr, uint16_t data) {
-    mcp_cs_enable();
-
-    SPI_SendByte(0b01000000 | ((device) << 1));
-    SPI_SendByte(addr);
-    SPI_SendByte(data & 0xff);
-    SPI_SendByte((data >> 8) & 0xff);
-
-    mcp_cs_disable();
-}
-
-static uint16_t mcp_read(uint8_t device, uint8_t addr) {
-    mcp_cs_enable();
-
-    SPI_SendByte(0b01000001 | ((device) << 1));
-    SPI_SendByte(addr);
-
-    uint8_t low_byte = SPI_ReceiveByte();
-    uint8_t high_byte = SPI_ReceiveByte();
-
-    mcp_cs_disable();
-
-    return low_byte | (high_byte << 8);
-}
-
-static int row_base_iodir = 0x00ff;
-
-static void mcp_init(void) {
-    /* Mode 3 */
-    SPI_Init(SPI_SPEED_FCPU_DIV_8 | SPI_MODE_MASTER);
-
-    /* Set CS pin as output and disable it */
-    setPinOutput(MCP_CS_PIN);
-    mcp_cs_disable();
-
-    /* Configure both MCP23S17 in addressed mode */
-    mcp_cs_enable();
-    SPI_SendByte(0b01000000);
-    SPI_SendByte(MCP_IOCON);
-    SPI_SendByte(0x18);
-    mcp_cs_disable();
-
-    /* Device 0: All pins read with pull ups */
-    mcp_write(0, MCP_IODIR,  0xffff);
-    mcp_write(0, MCP_GPPU,   0xffff);
-
-    /* Device 1: All pins read and low. We toggle IODIRs in the row scan */
-    mcp_write(1, MCP_IODIR,  row_base_iodir);
-    mcp_write(1, MCP_GPIO,   0x0000);
-    mcp_write(1, MCP_GPPU,   0xffff);
-}
+#define CLOCK_PIN B3
+#define LATCH_PIN E6
+#define DATA_PIN  B7
 
 void matrix_print(void) {
     print("\nr/c 0123456789ABCDEF\n");
@@ -127,7 +69,9 @@ void matrix_print(void) {
 }
 
 void matrix_init(void) {
-    mcp_init();
+    setPinOutput(CLOCK_PIN);
+    setPinOutput(LATCH_PIN);
+    setPinOutput(DATA_PIN);
 
     // Unless hardware debouncing - Init the configured debounce routine
     debounce_init(MATRIX_ROWS);
@@ -137,15 +81,22 @@ void matrix_init(void) {
 }
 
 static void select_row(uint8_t row) {
-    mcp_write(1, MCP_IODIR, row_base_iodir ^ (1 << row));
+    for(int i = 0; i < 8; i++) {
+        writePin(DATA_PIN, i != row);
+        writePinHigh(CLOCK_PIN);
+        writePinLow(CLOCK_PIN);
+    }
+    writePinHigh(LATCH_PIN);
+    writePinLow(LATCH_PIN);
 }
 
 static void deselect_rows(void) {
-    mcp_write(1, MCP_IODIR, row_base_iodir);
+    //mcp_write(1, MCP_IODIR, row_base_iodir);
 }
 
 static matrix_row_t read_cols(uint8_t row) {
-    return 0xffff ^ mcp_read(0, MCP_GPIO);
+    return 0;
+    //return 0xffff ^ mcp_read(0, MCP_GPIO);
 }
 
 uint8_t matrix_scan(void) {
@@ -172,16 +123,6 @@ uint8_t matrix_scan(void) {
 }
 
 void modelh_set_leds(int num_lock, int caps_lock, int scroll_lock) {
-    uint16_t gpio = 0xffff;
-    if (num_lock)
-        gpio &= ~0x0400;
-    if (caps_lock)
-        gpio &= ~0x0200;
-    if (scroll_lock)
-        gpio &= ~0x0100;
-
-    row_base_iodir = gpio;
-    mcp_write(1, MCP_IODIR, row_base_iodir);
 }
 
 bool led_update_kb(led_t led_state) {
