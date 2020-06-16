@@ -75,6 +75,11 @@ void matrix_init(void) {
     setPinOutput(LATCH_PIN);
     setPinOutput(DATA_PIN);
 
+    for (int i = 0; i < MATRIX_COLS; i++) {
+        pin_t pin = col_pins[i];
+        setPinInputHigh(pin);
+    }
+
     // Unless hardware debouncing - Init the configured debounce routine
     debounce_init(MATRIX_ROWS);
 
