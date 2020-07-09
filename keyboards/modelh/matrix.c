@@ -59,6 +59,10 @@ matrix_row_t matrix_get_row(uint8_t row) {
 #define LATCH_PIN E6
 #define DATA_PIN  B7
 
+#define LED0_PIN F0
+#define LED1_PIN F1
+#define LED2_PIN F4
+
 void matrix_print(void) {
     print("\nr/c 0123456789ABCDEF\n");
 
@@ -79,6 +83,10 @@ void matrix_init(void) {
         pin_t pin = col_pins[i];
         setPinInputHigh(pin);
     }
+
+    setPinOutput(LED0_PIN);
+    setPinOutput(LED1_PIN);
+    setPinOutput(LED2_PIN);
 
     // Unless hardware debouncing - Init the configured debounce routine
     debounce_init(MATRIX_ROWS);
@@ -134,6 +142,9 @@ uint8_t matrix_scan(void) {
 }
 
 void modelh_set_leds(int num_lock, int caps_lock, int scroll_lock) {
+	writePin(LED0_PIN, !num_lock);
+	writePin(LED1_PIN, !caps_lock);
+	writePin(LED2_PIN, !scroll_lock);
 }
 
 bool led_update_kb(led_t led_state) {
