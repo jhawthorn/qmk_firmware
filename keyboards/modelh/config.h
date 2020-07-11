@@ -57,7 +57,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define BACKLIGHT_BREATHING
 // #define BACKLIGHT_LEVELS 3
 
-// #define RGB_DI_PIN E2
+#define RGB_DI_PIN F4
+#define RGBLED_NUM 3
+#define RGBLIGHT_EFFECT_BREATHING
+#define RGBLIGHT_EFFECT_RAINBOW_MOOD
+#define RGBLIGHT_EFFECT_RAINBOW_SWIRL
+
 // #ifdef RGB_DI_PIN
 //   #define RGBLED_NUM 16
 //   #define RGBLIGHT_HUE_STEP 8

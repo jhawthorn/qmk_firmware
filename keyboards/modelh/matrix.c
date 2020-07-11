@@ -142,9 +142,9 @@ uint8_t matrix_scan(void) {
 }
 
 void modelh_set_leds(int num_lock, int caps_lock, int scroll_lock) {
-	writePin(LED0_PIN, !num_lock);
-	writePin(LED1_PIN, !caps_lock);
-	writePin(LED2_PIN, !scroll_lock);
+	//writePin(LED0_PIN, !num_lock);
+	//writePin(LED1_PIN, !caps_lock);
+	//writePin(LED2_PIN, !scroll_lock);
 }
 
 bool led_update_kb(led_t led_state) {
