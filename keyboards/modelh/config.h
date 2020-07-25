@@ -19,6 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "config_common.h"
 
+/* Model H customizations */
+#define MODELH_LED_PINS { B9, B8, B7 }
+
+#define MODELH_STATUS_LED C13
+
 /* USB Device descriptor parameter */
 #define VENDOR_ID    0xFEED
 #define PRODUCT_ID   0xB155
