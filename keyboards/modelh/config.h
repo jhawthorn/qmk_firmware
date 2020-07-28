@@ -29,7 +29,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PRODUCT_ID   0xB155
 #define DEVICE_VER   0x0100
 #define MANUFACTURER John Hawthorn
-#define PRODUCT      modelh
+#define PRODUCT      Model H Keyboard
+#define DESCRIPTION  USB controller for Model M keyboards
 
 /* key matrix size */
 #define MATRIX_ROWS 8
