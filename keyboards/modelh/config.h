@@ -62,6 +62,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define BACKLIGHT_LEVELS 3
 //#define BACKLIGHT_BREATHING
 
+// Model H should use absolute maximum 80mA when all LEDs are on and it is in
+// use. Only requesting 100mA should allow it to work with devices only
+// supporting USB 1.0 power levels like some iPads.
+#define USB_MAX_POWER_CONSUMPTION 100
+
 //#define RGB_DI_PIN E2
 //#ifdef RGB_DI_PIN
 //#    define RGBLED_NUM 16
